@@ -48,20 +48,29 @@ ip -details -statistics link show can0
 ```
 
 ## Run ROS 2 Low-Level Control
-
-Launch both low-level nodes:
-
-```bash
-cd ~/GolfCart/golfcart-low-level-control/ros2_ws
-source install/setup.bash
-ros2 launch golfcart_low_level low_level.launch.py
+Terminal 1 รัน low-level stack:
+```
+  cd ~/GolfCart/golfcart-low-level-control/ros2_ws
+  source install/setup.bash
+  ros2 launch golfcart_low_level low_level.launch.py
 ```
 
-Send a test command first:
+Terminal 2 เลือก command source แค่ตัวเดียว
 
-```bash
-source install/setup.bash
-ros2 run golfcart_low_level fake_cmd_vel
+  Fake:
+```
+  source install/setup.bash
+  ros2 run golfcart_low_level fake_cmd_vel
+```
+
+  Joystick:
+  กดปุ่ม ZR สำหรับเริ่มใช้ joy
+  อนาล็อกซ้ายใช้ควบคุมความเร็ว (max 3.0 m/s)
+  อนาล็อกขวาใช้ควบคุมพวงมาลัย (max 0.7 rad)
+  กดค้างปุ่ม B เพื่อสั่ง emergency stop
+```
+  source install/setup.bash
+  ros2 launch golfcart_low_level joy_cmd_vel.launch.py
 ```
 
 #Useful status topics:
@@ -237,54 +246,3 @@ ros2 topic echo /cmd_vel
   ส่ง CAN extended ID 0x06000001 ไป KEYA steering motor
 
 #-------------------------------------------------------------------
-
-
-
-
-#-------------------------------------------------------------------
-#--------------------ควบคุมผ่าน joy-----------------------------------
-#-------------------------------------------------------------------
-
-
-source install/setup.bash
-ros2 launch golfcart_low_level low_level.launch.py start_joy_node:=true
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Only one process should send low-level CAN commands to the vehicle bus.
