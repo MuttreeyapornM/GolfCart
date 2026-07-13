@@ -1,0 +1,46 @@
+# OS / editor
+.DS_Store
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Python / ROS 2
+__pycache__/
+*.py[cod]
+.pytest_cache/
+build/
+install/
+log/
+
+# STM32CubeIDE / Eclipse generated files
+Debug/
+Release/
+.metadata/
+.settings/
+*.launch
+*.elf
+*.bin
+*.hex
+*.map
+*.list
+*.o
+*.d
+*.su
+*.cyclo
+
+# Archives and generated hardware outputs
+*.zip
+*.7z
+*.tar
+*.tar.gz
+*.tgz
+production/
+*.step
+*.stp
+
+# Large local captures
+*.mp4
+*.mov
+*.bag
+*.db3
