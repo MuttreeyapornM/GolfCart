@@ -25,7 +25,6 @@ setup(
             'ros_can_bridge = golfcart_low_level.ros_can_bridge:main',
             'steering_node = golfcart_low_level.steering_node:main',
             'joy_cmd_vel = golfcart_low_level.joy_cmd_vel:main',
-            'cmd_vel_steering_node = golfcart_low_level.cmd_vel_steering_node:main',
             'fake_cmd_vel = golfcart_low_level.fake_cmd_vel:main',
         ],
     },

@@ -2,11 +2,13 @@
 
 ROS 2 package for the golf cart low-level control layer.
 
-It runs three nodes on the Jetson:
+The low-level launch runs two hardware-facing nodes on the Jetson:
 
 - `ros_can_bridge`: supervisor and ROS 2 <-> STM32 CAN bridge.
 - `steering_node`: KEYA steering motor driver over extended 29-bit CAN.
-- `joy_cmd_vel`: joystick deadman teleop that publishes `/cmd_vel`.
+
+Command sources such as `joy_cmd_vel`, `joy_node`, `fake_cmd_vel`, or a
+navigation stack must run separately and publish `/cmd_vel`.
 
 Recommended folder layout:
 
@@ -75,31 +77,34 @@ Bring up CAN first:
 bash src/golfcart_low_level/scripts/setup_can0.sh can0 250000
 ```
 
-Launch the low-level stack:
+Launch the low-level stack. This starts only the hardware-facing low-level
+nodes and waits for `/cmd_vel` from another process:
 
 ```bash
 ros2 launch golfcart_low_level low_level.launch.py
 ```
 
-If you want the launch file to also start the USB joystick driver, install the
-ROS 2 `joy` package and run:
+Run exactly one `/cmd_vel` source in another terminal. For fake test commands:
 
 ```bash
-ros2 launch golfcart_low_level low_level.launch.py start_joy_node:=true
+source install/setup.bash
+ros2 run golfcart_low_level fake_cmd_vel
 ```
 
-Or run them separately:
+For joystick control, start the USB joystick driver and the deadman teleop
+together:
+
+```bash
+source install/setup.bash
+ros2 launch golfcart_low_level joy_cmd_vel.launch.py
+```
+
+You can also run the two low-level nodes manually instead of using the launch
+file:
 
 ```bash
 ros2 run golfcart_low_level ros_can_bridge
 ros2 run golfcart_low_level steering_node
-ros2 run golfcart_low_level joy_cmd_vel
-```
-
-Start the joystick driver separately if you did not enable it in launch:
-
-```bash
-ros2 run joy joy_node
 ```
 
 ## Main Topics
@@ -153,7 +158,8 @@ Brake servo angle command:
 
 ## Quick Test
 
-Publish a stopped command first:
+With `low_level.launch.py` already running, publish a stopped command from a
+separate terminal:
 
 ```bash
 ros2 topic pub -r 10 /cmd_vel geometry_msgs/msg/Twist \
